@@ -2,6 +2,9 @@
 
 A Clojure library designed to do some math functions like calculate square root of a number
 
+Based on Heron's method
+https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method
+
 ## Usage
 
 (sqrt 100) => 10
