@@ -2,10 +2,15 @@
   (:require [clojure.test :refer :all]
             [glath.core :refer :all]))
 
+(defn test-sqrt [num expected-sqrt]
+  (testing (str "That the square root of " num " is " expected-sqrt)
+    (is (< -0.0000000000001 (- (sqrt num) expected-sqrt) 0.0000000000001))))
+
 (deftest sqrt-test
-  (testing "That the square root of 9 is 3"
-    (is (= (sqrt 9) 3))))
+  (test-sqrt 9 3)
+  (test-sqrt 100 10)
+  (test-sqrt 10 3.1622776985168457))
 
 (deftest approx-test
   (testing "That the approximate square root of 9 is "
-    (is (= (approx 9 4) (/ (+ 9 (/ 9 4)) 2)))))
+    (is (= (approx 9 4) (/ (+ 4 (/ 9 4)) 2)))))
