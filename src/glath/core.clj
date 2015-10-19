@@ -7,8 +7,7 @@
   "I compute the square root of a number x"
   [x]
   (let [epsilon 0.00000001]
-  (loop [guess (/ x 2) previous-guess 0]
-    (do (prn guess)
+    (loop [guess (/ x 2) previous-guess 0]
       (if (< (- epsilon) (- guess previous-guess) epsilon)
-      guess
-      (recur (float (approx x guess)) guess))))))
+        guess
+        (recur (float (approx x guess)) guess)))))
