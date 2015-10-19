@@ -6,7 +6,9 @@
 (defn sqrt
   "I compute the square root of a number x"
   [x]
-  (loop [i 10 guess (/ x 2)]
-    (if (= i 0)
-      (float guess)
-      (recur (dec i) (approx x guess)))))
+  (let [epsilon 0.00000001]
+  (loop [guess (/ x 2) previous-guess 0]
+    (do (prn guess)
+      (if (< (- epsilon) (- guess previous-guess) epsilon)
+      guess
+      (recur (float (approx x guess)) guess))))))
