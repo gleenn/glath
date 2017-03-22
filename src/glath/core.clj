@@ -1,13 +1,12 @@
 (ns glath.core)
 
-(defn approx [x guess]
-  (/ (+ guess (/ x guess)) 2))
+(defn square [x] (* x x))
 
-(defn sqrt
-  "I compute the square root of a number x"
-  [x]
-  (let [epsilon 0.00000001]
-    (loop [guess (/ x 2) previous-guess 0]
-      (if (< (- epsilon) (- guess previous-guess) epsilon)
-        guess
-        (recur (float (approx x guess)) guess)))))
+(defn NaN->0 [x] (if (.isNaN x) 0 x))
+
+(defn cosine-similarity [vec-a vec-b]
+  (/
+    (reduce + (map * vec-a vec-b))
+    (*
+      (Math/sqrt (reduce + (map square vec-a)))
+      (Math/sqrt (reduce + (map square vec-b))))))
