@@ -17,16 +17,18 @@
 (defn dist [point-a point-b]
   )
 
-(defn median-point [points n-groups]
-  (map #(apply min %)
-       (partition n-groups (transpose points))))
+(defn median-point [points]
+  (->> points
+       transpose
+       (map (juxt #(apply min %) #(apply max %)))
+       (map (fn [[min max]] (+ min (/ (- max min) 2))))))
 
-(defn initial-median-points [points n-groups]
-  (let [median-points (take n-groups (shuffle points))]
-    (reduce (fn [median-point results]
-              (assoc results median-point))
-            {}
-            median-points)))
+(defn initial-classifications [points n-groups]
+  (->> points
+       shuffle
+       (partition-all (/ (count points) n-groups))
+       (mapcat (fn [grouped-points] [(median-point grouped-points) grouped-points]))
+       (apply hash-map)))
 
 #_(defn k-means [points n-groups]
   ; take points and assign them to initial groups
@@ -41,9 +43,3 @@
   (let [groups-medians (group-medians)]
     (loop []))
   )
-
-(defn median-point [points]
-  (->> points
-       transpose
-       (map (juxt #(apply min %) #(apply max %)))
-       (map (fn [[min max]] (+ min (/ (- max min) 2))))))
