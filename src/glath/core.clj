@@ -7,15 +7,15 @@
 (defn dot-product [vec-a vec-b]
   (reduce + (map * vec-a vec-b)))
 
+(defn transpose [m]
+  (apply mapv vector m))
+
 (defn cosine-similarity [vec-a vec-b]
   (/
     (dot-product vec-a vec-b)
     (*
       (Math/sqrt (reduce + (map square vec-a)))
       (Math/sqrt (reduce + (map square vec-b))))))
-
-(defn transpose [m]
-  (apply mapv vector m))
 
 (defn cartesian-distance [point-a point-b]
   (->> (map - point-a point-b)
@@ -35,6 +35,9 @@
        (partition-all (/ (count points) n-groups))
        (mapcat (fn [grouped-points] [(median-point grouped-points) grouped-points]))
        (apply hash-map)))
+
+(defn reclassify [classification]
+  classification)
 
 #_(defn k-means [points n-groups]
   ; take points and assign them to initial groups
