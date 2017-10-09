@@ -14,8 +14,11 @@
 (defn transpose [m]
   (apply mapv vector m))
 
-(defn dist [point-a point-b]
-  )
+(defn cartesian-distance [point-a point-b]
+  (->> (map - point-a point-b)
+       (map #(* % %))
+       (reduce +)
+       Math/sqrt))
 
 (defn median-point [points]
   (->> points

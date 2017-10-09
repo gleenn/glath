@@ -53,3 +53,9 @@
                                      [1.0 0.0 0.0]
                                      [0.0 2.0 0.0]
                                      [0.0 0.0 3.0]] 4)))))
+
+(deftest cartesian-distance-test
+  (is (= 0.0 (cartesian-distance [1.0 0.0] [1.0 0.0])))
+  (is (= (Math/sqrt 2.0) (cartesian-distance [1.0 0.0] [0.0 1.0])))
+  (is (= (Math/sqrt 3.0) (cartesian-distance [1.0 1.0 1.0] [0.0 0.0 0.0])))
+  (is (= (Math/sqrt 14.0) (cartesian-distance [3.0 2.0 1.0] [0.0 0.0 0.0 0.0]))))
