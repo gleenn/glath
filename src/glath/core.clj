@@ -16,7 +16,7 @@
 
 (defn cartesian-distance [point-a point-b]
   (->> (map - point-a point-b)
-       (map #(* % %))
+       (map square)
        (reduce +)
        Math/sqrt))
 
