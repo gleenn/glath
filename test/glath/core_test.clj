@@ -10,16 +10,19 @@
     (is (= 1.0 (cosine-similarity [0 1] [0 1])))
     (is (= 0.0 (cosine-similarity [1 0] [0 1])))))
 
+(deftest transpose-test
+  (is (= [[0.0 1.0 0.0 0.0]
+          [0.0 0.0 1.0 0.0]
+          [0.0 0.0 0.0 1.0]]
+         (transpose [[0.0 0.0 0.0]
+                     [1.0 0.0 0.0]
+                     [0.0 1.0 0.0]
+                     [0.0 0.0 1.0]]))))
+
 (deftest median-point-test
   (testing "returns the point that is the median point of the given points"
-    (is (= [1/2 1/2 1/2]
-           (median-point [[0 0 0]
-                          [1 0 0]
-                          [0 1 0]
-                          [0 0 1]])))
-
-    (is (= [0.5 0.5 0.5]
+    (is (= [0.5 1.0 1.5]
            (median-point [[0.0 0.0 0.0]
                           [1.0 0.0 0.0]
-                          [0.0 1.0 0.0]
-                          [0.0 0.0 1.0]])))))
+                          [0.0 2.0 0.0]
+                          [0.0 0.0 3.0]])))))

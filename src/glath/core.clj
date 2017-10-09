@@ -11,13 +11,22 @@
       (Math/sqrt (reduce + (map square vec-a)))
       (Math/sqrt (reduce + (map square vec-b))))))
 
-(defn median-point [points]
-  (let [N (count (first points))
-        mins (for [i (range N)]
-          (apply min (for [point points] (nth point i))))
-        maxs (for [i (range N)]
-          (apply max (for [point points] (nth point i))))]
-    (map (fn [min max] (+ min (/ (- max min) 2))) mins maxs)))
+(defn transpose [m]
+  (apply mapv vector m))
+
+(defn dist [point-a point-b]
+  )
+
+(defn median-point [points n-groups]
+  (map #(apply min %)
+       (partition n-groups (transpose points))))
+
+(defn initial-median-points [points n-groups]
+  (let [median-points (take n-groups (shuffle points))]
+    (reduce (fn [median-point results]
+              (assoc results median-point))
+            {}
+            median-points)))
 
 #_(defn k-means [points n-groups]
   ; take points and assign them to initial groups
@@ -32,3 +41,9 @@
   (let [groups-medians (group-medians)]
     (loop []))
   )
+
+(defn median-point [points]
+  (->> points
+       transpose
+       (map (juxt #(apply min %) #(apply max %)))
+       (map (fn [[min max]] (+ min (/ (- max min) 2))))))
