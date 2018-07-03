@@ -23,3 +23,16 @@
                      [1.0 0.0 0.0]
                      [0.0 1.0 0.0]
                      [0.0 0.0 1.0]]))))
+
+(deftest chi-squared-test
+  ;District:      A 	B 	C 	D 	total
+
+  ;White collar 	90 	60 	104 95 	349
+  ;Blue collar 	  30 	50 	51 	20 	151
+  ;No collar 	    30 	40 	45 	35 	150
+  ;Total 	        150 150 200 150 650
+
+  (testing "the chi-squared value from https://en.wikipedia.org/wiki/Chi-squared_test"
+    (is (= 24.571202835698884 (chi-squared [[90 60 104 95]
+                                            [30 50 51 20]
+                                            [30 40 45 35]])))))
