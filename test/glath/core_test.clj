@@ -36,3 +36,13 @@
     (is (= 24.571202835698884 (chi-squared [[90 60 104 95]
                                             [30 50 51 20]
                                             [30 40 45 35]])))))
+
+(deftest independent?-test
+  (testing "returns true or false if chi-squared value is above or below cutoff"
+    (is (not (independent? 0.01 [[90 60 104 95]
+                                 [30 50 51 20]
+                                 [30 40 45 35]])))
+
+    (is (independent? 0.01 [[1 1 1 1]
+                            [1 1 1 1]
+                            [1 1 1 1]]))))

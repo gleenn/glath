@@ -17,6 +17,19 @@
       (Math/sqrt (reduce + (map square vec-a)))
       (Math/sqrt (reduce + (map square vec-b))))))
 
+(def chi-values-for-confidence
+  "confidence interval for 2 degrees of freedom chi-squared problem"
+  {0.995 0.01
+   0.99  0.02
+   0.975 0.051
+   0.95  0.103
+   0.9   0.211
+   0.1   4.605
+   0.05  5.991
+   0.025 7.378
+   0.01  9.21
+   0.005 10.597})
+
 (defn chi-squared [table]
   (let [observations (->> table
                           (map (partial reduce +))
@@ -24,10 +37,7 @@
         observations-inv (float (/ 1 observations))
         col-sums (map (partial reduce +) (transpose table))
         ;_ (prn :col-sums col-sums)
-        row-sums (map (partial reduce +) table)
-        ;_ (prn :row-sums row-sums)
-        ]
-
+        row-sums (map (partial reduce +) table)]
     (->> (for [i (range (count (first table)))
                j (range (count table))]
            (let [col-sum (nth col-sums i)
@@ -44,3 +54,6 @@
                  ]
              statistic))
          (reduce +))))
+
+(defn independent? [confidence-interval table]
+  (< (chi-squared table) (chi-values-for-confidence confidence-interval)))
