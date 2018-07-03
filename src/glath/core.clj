@@ -29,10 +29,10 @@
        (map (juxt #(apply min %) #(apply max %)))
        (map (fn [[min max]] (+ min (double (/ (- max min) 2)))))))
 
-(defn initial-classifications [points n-groups]
+(defn initial-classifications [k-groups points]
   (->> points
        shuffle
-       (partition-all (/ (count points) n-groups))
+       (partition-all (/ (count points) k-groups))
        (mapcat (fn [grouped-points] [(median-point grouped-points) grouped-points]))
        (apply hash-map)))
 
@@ -46,9 +46,6 @@
         re-grouped-classification
         (reduce (fn [new-classification point]
                   (let [closest-median-point (apply min-key #(cartesian-distance point %) median-points)]
-                    (println "point" point
-                             "is closest to" closest-median-point
-                             "because its distance was" (cartesian-distance point closest-median-point))
                     (update new-classification
                             closest-median-point
                             (fnil #(conj % point) (hash-set)))))
@@ -57,15 +54,16 @@
               (assoc result (median-point new-group) new-group)) {}
             re-grouped-classification)))
 
-#_(defn k-means [points n-groups]
-  "
-  - take points and assign them to initial groups randomly
-  - calculate median point for each group based on points contained in G_i for each i
-  - a) calculate distance from G_i to each point
-    b) select G_i that has min distance as
-    c) reassign every point to new group-index based on which G_i is closest
-  - goto step 2 if things have moved
-  "
-  (let [groups-medians (group-medians)]
-    (loop []))
-  )
+(defn k-means [k-groups points]
+  " - take points and assign them to initial K groups randomly
+    - calculate median point for each group based on points contained in G_i for each i
+    - a) calculate distance from G_i to each point
+      b) select G_i that has min distance as
+      c) reassign every point to new group-index based on which G_i is closest
+    - goto step 2 if things have moved"
+  (loop [classification (initial-classifications k-groups points) i 0]
+    (let [new-classification (reclassify classification)]
+      (println "looping" i)
+      (if (= classification new-classification)
+        classification
+        (recur (reclassify new-classification) (inc i))))))
